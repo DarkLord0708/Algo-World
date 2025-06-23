@@ -1,0 +1,57 @@
+/* General reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #f4f4f4;
+  color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Header styling */
+h1 {
+  margin-bottom: 20px;
+  font-size: 2.5rem;
+  color: #2c3e50;
+}
+
+/* Button container */
+.button-container {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Button styling */
+button {
+  padding: 15px 30px;
+  font-size: 1rem;
+  background-color: #3498db;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-transform: uppercase;
+}
+
+button:hover {
+  background-color: #2980b9;
+}
+
+/* Sudoku/Dijkstra/Islands container (for future pages) */
+.visualizer-container {
+  margin-top: 30px;
+  width: 90%;
+  max-width: 800px;
+  text-align: center;
+}

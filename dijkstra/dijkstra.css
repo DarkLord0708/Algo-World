@@ -1,0 +1,50 @@
+body {
+  font-family: sans-serif;
+  background: #f0f0f0;
+  text-align: center;
+}
+
+.container {
+  margin-top: 40px;
+}
+
+button {
+  margin: 10px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+#graph-container {
+  display: grid;
+  grid-template-columns: repeat(5, 80px);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.node {
+  width: 80px;
+  height: 80px;
+  background: #fff;
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  position: relative;
+}
+
+.node.visited {
+  background: #e67e22;
+  color: white;
+}
+
+.edge-label {
+  position: absolute;
+  font-size: 12px;
+  background: #ddd;
+  border-radius: 4px;
+  padding: 2px 5px;
+  top: -20px;
+}
