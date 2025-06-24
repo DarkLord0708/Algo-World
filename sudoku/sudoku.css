@@ -2,7 +2,13 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-image: url("./assets/mohamed-marey-Z2wO6-_c1wA-unsplash.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-attachment: fixed;
+  
 }
 
 body {
@@ -10,11 +16,6 @@ body {
   font-family: Arial, sans-serif;
   text-align: center;
   margin: 30px;
-  /* background: linear-gradient(to bottom right, #eb2c2c, #32a6e0); */
-  background-image: url("./assets/mohamed-marey-Z2wO6-_c1wA-unsplash.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
 }
 
 h1 {

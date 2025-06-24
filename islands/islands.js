@@ -46,7 +46,7 @@ async function dfs(i, j) {
   visited[i][j] = true;
   markVisited(i, j);
 
-  await delay(120); // ⬅ Slower animation speed
+  await delay(120); 
 
   await dfs(i + 1, j);
   await dfs(i - 1, j);
@@ -79,7 +79,6 @@ async function visualizeIslands() {
   }
 }
 
-// ✅ Automatically generate a grid on page load
 window.onload = () => {
   generateRandomGrid();
 };
