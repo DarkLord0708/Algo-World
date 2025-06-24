@@ -1,8 +1,5 @@
-# Algo-World
-
-https://darklord0708.github.io/Algo-World/
 # 🌍 Algo World – Algorithm Visualizer
-
+(hosted at: https://darklord0708.github.io/Algo-World/)
 Algo World is a sleek and interactive web app that **visualizes popular algorithms** in an engaging and educational way. It features **animated simulations**, **intuitive UI**, and visually styled components to help users understand algorithm logic step-by-step.
 
 ---
@@ -26,14 +23,6 @@ Algo World is a sleek and interactive web app that **visualizes popular algorith
   - Random grid generation
   - Animated island discovery with color change
   - Step-by-step depth-first search visualization
-
----
-
-## 🖼️ Preview
-
-> 📸 Add a few screenshots or a short GIF here if possible.  
-> Example:
-> ![Sudoku Demo](./assets/sudoku-demo.gif)
 
 ---
 
