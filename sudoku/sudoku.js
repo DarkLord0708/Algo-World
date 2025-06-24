@@ -67,44 +67,32 @@ const hardcodedBoards = [
   ]
 ];
 
-
-let solutionBoard = [];
 let currentBoardIndex = 0;
+let solutionBoard = [];
+let board = [];
+let isSolving = false;
 
-
-function renderBoard(board) {
+function renderBoard(initialBoard) {
   const container = document.getElementById("sudoku-board");
   container.innerHTML = "";
 
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
       const cell = document.createElement("input");
-      cell.dataset.row = i;
-      cell.dataset.col = j;
-
-      cell.addEventListener("mouseover", () => {
-        const allCells = document.querySelectorAll(".sudoku-cell");
-        allCells.forEach(c => {
-          if (c.dataset.row == i || c.dataset.col == j) {
-            c.classList.add("highlight");
-          }
-        });
-      });
-
-      cell.addEventListener("mouseout", () => {
-        const allCells = document.querySelectorAll(".sudoku-cell");
-        allCells.forEach(c => c.classList.remove("highlight"));
-      });
-
       cell.className = "sudoku-cell";
       cell.type = "text";
       cell.maxLength = 1;
+      cell.dataset.row = i;
+      cell.dataset.col = j;
 
-      if (board[i][j] !== 0) {
-        cell.value = board[i][j];
+      if (initialBoard[i][j] !== 0) {
+        cell.value = initialBoard[i][j];
         cell.disabled = true;
+        board[i][j] = initialBoard[i][j];
       } else {
-        cell.addEventListener("input", function () {
+        board[i][j] = 0;
+
+        cell.addEventListener("input", () => {
           const val = parseInt(cell.value);
           if (!val || val < 1 || val > 9) {
             cell.classList.remove("correct");
@@ -112,72 +100,85 @@ function renderBoard(board) {
             return;
           }
           if (val === solutionBoard[i][j]) {
+            board[i][j] = val;
             cell.classList.remove("incorrect");
             cell.classList.add("correct");
           } else {
+            board[i][j] = val;
             cell.classList.remove("correct");
             cell.classList.add("incorrect");
           }
         });
       }
 
+      cell.addEventListener("mouseover", () => {
+        const all = document.querySelectorAll(".sudoku-cell");
+        all.forEach(c => {
+          const r = c.dataset.row;
+          const c_ = c.dataset.col;
+          if ((r == i || c_ == j) && !c.disabled) {
+            c.classList.add("highlight");
+          }
+        });
+      });
+      cell.addEventListener("mouseout", () => {
+        document.querySelectorAll(".sudoku-cell").forEach(c => c.classList.remove("highlight"));
+      });
+
       container.appendChild(cell);
     }
   }
 }
 
+function isValid(board, row, col, num) {
+  for (let x = 0; x < 9; x++) {
+    if (board[row][x] === num || board[x][col] === num) return false;
+  }
+
+  const startRow = row - (row % 3);
+  const startCol = col - (col % 3);
+  for (let i = startRow; i < startRow + 3; i++) {
+    for (let j = startCol; j < startCol + 3; j++) {
+      if (board[i][j] === num) return false;
+    }
+  }
+
+  return true;
+}
+
 function solve(board) {
-  function isValid(board, row, col, num) {
-    for (let x = 0; x < 9; x++) {
-      if (board[row][x] === num || board[x][col] === num) return false;
-    }
-
-    const startRow = row - (row % 3), startCol = col - (col % 3);
-    for (let i = startRow; i < startRow + 3; i++) {
-      for (let j = startCol; j < startCol + 3; j++) {
-        if (board[i][j] === num) return false;
-      }
-    }
-
-    return true;
-  }
-
-  function solveHelper(board) {
-    for (let i = 0; i < 9; i++) {
-      for (let j = 0; j < 9; j++) {
-        if (board[i][j] === 0) {
-          for (let num = 1; num <= 9; num++) {
-            if (isValid(board, i, j, num)) {
-              board[i][j] = num;
-              if (solveHelper(board)) return true;
-              board[i][j] = 0;
-            }
-          }
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
   const boardCopy = board.map(row => [...row]);
-  solveHelper(boardCopy);
+
+  function helper(i, j) {
+    if (i === 9) return true;
+    if (j === 9) return helper(i + 1, 0);
+    if (boardCopy[i][j] !== 0) return helper(i, j + 1);
+
+    for (let num = 1; num <= 9; num++) {
+      if (isValid(boardCopy, i, j, num)) {
+        boardCopy[i][j] = num;
+        if (helper(i, j + 1)) return true;
+        boardCopy[i][j] = 0;
+      }
+    }
+    return false;
+  }
+
+  helper(0, 0);
   return boardCopy;
 }
 
 function generateBoard() {
+  if (isSolving) return;
   const puzzle = hardcodedBoards[currentBoardIndex];
   currentBoardIndex = (currentBoardIndex + 1) % hardcodedBoards.length;
-
-  // Solve the puzzle and store the solution
-  solutionBoard = solve(puzzle);
-
+  board = puzzle.map(row => [...row]);
+  solutionBoard = solve(board);
   renderBoard(puzzle);
 }
 
-
-
 function clearBoard() {
+  if (isSolving) return;
   const inputs = document.querySelectorAll(".sudoku-cell");
   inputs.forEach(input => {
     if (!input.disabled) {
@@ -185,20 +186,46 @@ function clearBoard() {
       input.classList.remove("correct", "incorrect");
     }
   });
+  board = board.map((row, i) => row.map((_, j) => hardcodedBoards[currentBoardIndex][i][j] || 0));
 }
 
-function solveSudoku() {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function solveSudoku() {
+  if (isSolving) return;
+  isSolving = true;
   const inputs = document.querySelectorAll(".sudoku-cell");
-  for (let i = 0; i < 81; i++) {
-    const row = Math.floor(i / 9);
-    const col = i % 9;
-    if (!inputs[i].disabled) {
-      inputs[i].value = solutionBoard[row][col];
-      inputs[i].classList.add("correct");
+
+  async function helper(i, j) {
+    if (i === 9) return true;
+    if (j === 9) return await helper(i + 1, 0);
+    if (board[i][j] !== 0) return await helper(i, j + 1);
+
+    for (let num = 1; num <= 9; num++) {
+      if (isValid(board, i, j, num)) {
+        board[i][j] = num;
+
+        const idx = i * 9 + j;
+        const cell = inputs[idx];
+        cell.value = num;
+        cell.classList.add("correct");
+        await sleep(0.1);
+
+        if (await helper(i, j + 1)) return true;
+
+        board[i][j] = 0;
+        cell.value = "";
+        cell.classList.remove("correct");
+        await sleep(0.1);
+      }
     }
+    return false;
   }
+
+  await helper(0, 0);
+  isSolving = false;
 }
 
-// Auto-generate board on load
 window.onload = generateBoard;
-
