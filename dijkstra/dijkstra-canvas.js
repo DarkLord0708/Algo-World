@@ -145,16 +145,19 @@ function drawEdge(x1, y1, x2, y2, weight) {
 function drawGraph() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    const offsetX = 90;
+    const offsetY = 40;
+
     for (let [u, v, w] of edges) {
         const p1 = nodePositions[u];
         const p2 = nodePositions[v];
-        drawEdge(p1.x, p1.y, p2.x, p2.y, w);
+        drawEdge(p1.x+offsetX, p1.y+offsetY, p2.x+offsetX, p2.y+offsetY, w);
     }
 
     for (let i = 0; i < nodes.length; i++) {
         const p = nodePositions[i];
         const label = distances[i] < Infinity ? i + " (" + distances[i] + ")" : i;
-        drawNode(p.x, p.y, label, visited[i] ? "#90ee90" : "skyblue");
+        drawNode(p.x+offsetX, p.y+offsetY, label, visited[i] ? "#90ee90" : "skyblue");
     }
 }
 
@@ -188,14 +191,16 @@ function sleep(ms) {
 }
 
 async function animateDot(x1, y1, x2, y2) {
-    const steps = 20;
+    const steps = 15;
+    const offsetX = 90;
+    const offsetY = 40;
     for (let i = 0; i <= steps; i++) {
         drawGraph();
-        const x = x1 + (x2 - x1) * (i / steps);
-        const y = y1 + (y2 - y1) * (i / steps);
+        const x = x1 + (x2 - x1) * (i / steps) + offsetX;
+        const y = y1 + (y2 - y1) * (i / steps) + offsetY;
         ctx.beginPath();
         ctx.arc(x, y, 8, 0, 2 * Math.PI);
-        ctx.fillStyle = "red";
+        ctx.fillStyle = "#A31621";
         ctx.fill();
         await sleep(50);
     }
@@ -232,5 +237,4 @@ async function runDijkstra() {
     drawGraph();
 }
 
-// Initialize the first graph on load
 generateGraph();

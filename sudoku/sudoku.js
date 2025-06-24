@@ -79,6 +79,23 @@ function renderBoard(board) {
   for (let i = 0; i < 9; i++) {
     for (let j = 0; j < 9; j++) {
       const cell = document.createElement("input");
+      cell.dataset.row = i;
+      cell.dataset.col = j;
+
+      cell.addEventListener("mouseover", () => {
+        const allCells = document.querySelectorAll(".sudoku-cell");
+        allCells.forEach(c => {
+          if (c.dataset.row == i || c.dataset.col == j) {
+            c.classList.add("highlight");
+          }
+        });
+      });
+
+      cell.addEventListener("mouseout", () => {
+        const allCells = document.querySelectorAll(".sudoku-cell");
+        allCells.forEach(c => c.classList.remove("highlight"));
+      });
+
       cell.className = "sudoku-cell";
       cell.type = "text";
       cell.maxLength = 1;
