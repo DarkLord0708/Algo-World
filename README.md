@@ -1,5 +1,5 @@
 # 🌍 Algo World – Algorithm Visualizer
-(hosted at: https://darklord0708.github.io/Algo-World/)
+(hosted at: https://darklord0708.github.io/Algo-World/)\\
 Algo World is a sleek and interactive web app that **visualizes popular algorithms** in an engaging and educational way. It features **animated simulations**, **intuitive UI**, and visually styled components to help users understand algorithm logic step-by-step.
 
 ---
