@@ -127,3 +127,68 @@ button:active {
 .highlight {
   background-color: #d1f3ff !important;
 }
+
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 2.2rem;
+    padding: 8px 16px;
+  }
+
+  .sudoku-container {
+    grid-template-columns: repeat(9, 40px);
+    grid-template-rows: repeat(9, 40px);
+  }
+
+  .sudoku-cell {
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+  }
+
+  button {
+    padding: 12px 24px;
+    font-size: 16px;
+    margin: 8px 6px;
+    min-width: 120px;
+  }
+
+  .button-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.6rem;
+    padding: 6px 12px;
+    letter-spacing: 0;
+  }
+
+  .sudoku-container {
+    grid-template-columns: repeat(9, 28px);
+    grid-template-rows: repeat(9, 28px);
+  }
+
+  .sudoku-cell {
+    width: 28px;
+    height: 28px;
+    font-size: 14px;
+  }
+
+  button {
+    padding: 10px 18px;
+    font-size: 14px;
+    min-width: auto;
+    width: 90%;
+    margin: 6px auto;
+    display: block;
+  }
+
+  .button-row {
+    flex-direction: column;
+    align-items: center;
+  }
+}
